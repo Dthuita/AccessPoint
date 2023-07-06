@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="22" failures="0" errors="0" time="0.526">
+  <testsuite name="partial Garden" errors="0" failures="0" skipped="0" timestamp="2023-07-03T15:39:20" time="0.476" tests="22">
+    <testcase classname="partial Garden garden with single student" name="partial Garden garden with single student" time="0.001">
+    </testcase>
+    <testcase classname="partial Garden different garden with single student" name="partial Garden different garden with single student" time="0.001">
+    </testcase>
+    <testcase classname="partial Garden garden with two students" name="partial Garden garden with two students" time="0">
+    </testcase>
+    <testcase classname="partial Garden multiple students for the same garden with three students second student&apos;s garden" name="partial Garden multiple students for the same garden with three students second student&apos;s garden" time="0.001">
+    </testcase>
+    <testcase classname="partial Garden multiple students for the same garden with three students third student&apos;s garden" name="partial Garden multiple students for the same garden with three students third student&apos;s garden" time="0">
+    </testcase>
+    <testcase classname="full garden for Alice, first student&apos;s garden" name="full garden for Alice, first student&apos;s garden" time="0.001">
+    </testcase>
+    <testcase classname="full garden for Bob, second student&apos;s garden" name="full garden for Bob, second student&apos;s garden" time="0">
+    </testcase>
+    <testcase classname="full garden for Charlie" name="full garden for Charlie" time="0">
+    </testcase>
+    <testcase classname="full garden for David" name="full garden for David" time="0">
+    </testcase>
+    <testcase classname="full garden for Eve" name="full garden for Eve" time="0">
+    </testcase>
+    <testcase classname="full garden for Fred" name="full garden for Fred" time="0">
+    </testcase>
+    <testcase classname="full garden for Ginny" name="full garden for Ginny" time="0">
+    </testcase>
+    <testcase classname="full garden for Harriet" name="full garden for Harriet" time="0">
+    </testcase>
+    <testcase classname="full garden for Ileana" name="full garden for Ileana" time="0">
+    </testcase>
+    <testcase classname="full garden for Joseph" name="full garden for Joseph" time="0">
+    </testcase>
+    <testcase classname="full garden for Kincaid, second to last student&apos;s garden" name="full garden for Kincaid, second to last student&apos;s garden" time="0">
+    </testcase>
+    <testcase classname="full garden for Larry, last student&apos;s garden" name="full garden for Larry, last student&apos;s garden" time="0">
+    </testcase>
+    <testcase classname="disordered class for Patricia" name="disordered class for Patricia" time="0">
+    </testcase>
+    <testcase classname="disordered class for Roger" name="disordered class for Roger" time="0">
+    </testcase>
+    <testcase classname="disordered class for Samantha" name="disordered class for Samantha" time="0">
+    </testcase>
+    <testcase classname="disordered class for Xander" name="disordered class for Xander" time="0">
+    </testcase>
+    <testcase classname="Two gardens, different students Bob and Charlie for each garden" name="Two gardens, different students Bob and Charlie for each garden" time="0">
+    </testcase>
+  </testsuite>
+</testsuites>
