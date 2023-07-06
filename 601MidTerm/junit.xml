@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="15" failures="0" errors="0" time="0.279">
+  <testsuite name="Bank Account" errors="0" failures="0" skipped="0" timestamp="2023-07-03T15:15:17" time="0.224" tests="15">
+    <testcase classname="Bank Account newly opened account has zero balance" name="Bank Account newly opened account has zero balance" time="0.001">
+    </testcase>
+    <testcase classname="Bank Account can deposit money" name="Bank Account can deposit money" time="0.001">
+    </testcase>
+    <testcase classname="Bank Account can deposit money sequentially" name="Bank Account can deposit money sequentially" time="0">
+    </testcase>
+    <testcase classname="Bank Account can withdraw money" name="Bank Account can withdraw money" time="0">
+    </testcase>
+    <testcase classname="Bank Account can withdraw money sequentially" name="Bank Account can withdraw money sequentially" time="0">
+    </testcase>
+    <testcase classname="Bank Account checking balance of closed account throws error" name="Bank Account checking balance of closed account throws error" time="0.007">
+    </testcase>
+    <testcase classname="Bank Account deposit into closed account throws error" name="Bank Account deposit into closed account throws error" time="0">
+    </testcase>
+    <testcase classname="Bank Account withdraw from closed account throws error" name="Bank Account withdraw from closed account throws error" time="0.001">
+    </testcase>
+    <testcase classname="Bank Account close already closed account throws error" name="Bank Account close already closed account throws error" time="0.001">
+    </testcase>
+    <testcase classname="Bank Account open already opened account throws error" name="Bank Account open already opened account throws error" time="0">
+    </testcase>
+    <testcase classname="Bank Account reopened account does not retain balance" name="Bank Account reopened account does not retain balance" time="0">
+    </testcase>
+    <testcase classname="Bank Account cannot withdraw more than deposited" name="Bank Account cannot withdraw more than deposited" time="0">
+    </testcase>
+    <testcase classname="Bank Account cannot withdraw negative amount" name="Bank Account cannot withdraw negative amount" time="0">
+    </testcase>
+    <testcase classname="Bank Account cannot deposit negative amount" name="Bank Account cannot deposit negative amount" time="0">
+    </testcase>
+    <testcase classname="Bank Account changing balance directly throws error" name="Bank Account changing balance directly throws error" time="0">
+    </testcase>
+  </testsuite>
+</testsuites>
