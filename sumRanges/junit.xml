@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="8" failures="0" errors="0" time="0.604">
+  <testsuite name="sum" errors="0" failures="0" skipped="0" timestamp="2023-07-03T15:18:09" time="0.534" tests="8">
+    <testcase classname="sum it returns 0 when provided with an empty array" name="sum it returns 0 when provided with an empty array" time="0.001">
+    </testcase>
+    <testcase classname="sum it returns the sum for positive number" name="sum it returns the sum for positive number" time="0">
+    </testcase>
+    <testcase classname="sum it returns the sum for negative number" name="sum it returns the sum for negative number" time="0">
+    </testcase>
+    <testcase classname="range it returns a range counting up from the start to the end value" name="range it returns a range counting up from the start to the end value" time="0">
+    </testcase>
+    <testcase classname="range it returns a range counting down from the start to the end value" name="range it returns a range counting down from the start to the end value" time="0.001">
+    </testcase>
+    <testcase classname="range it uses negative step values when provided" name="range it uses negative step values when provided" time="0">
+    </testcase>
+    <testcase classname="range it uses positive step values when provided" name="range it uses positive step values when provided" time="0.001">
+    </testcase>
+    <testcase classname="range it always returns at least the starting number" name="range it always returns at least the starting number" time="0">
+    </testcase>
+  </testsuite>
+</testsuites>

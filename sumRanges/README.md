@@ -1,0 +1,3 @@
+Implement the function called range. It should take three arguments start, end, and step. The last argument step should be optional.  The function should return an array containing all the numbers from start up to (and including) end. Use the argument step as the value, you will increase the range by. The default value for step should be 1 if the end is larger than the start and -1 if the end is smaller than the start. The function call range(1, 10, 2) should return [1, 3, 5, 7, 9]. Make sure it also works with negative step values so that range(5, 2, -1) produces [5, 4, 3, 2].
+
+Next, write a sum function that takes an array of numbers and returns the sum of these numbers. Run sum(range(1, 10))  and see whether it does indeed return 55.
