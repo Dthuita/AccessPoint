@@ -32,7 +32,7 @@ describe('test for basic functionality for homepage', ()=> {
     expect(homeButtons).toHaveLength(32)
   })
   //fire click event and change pages test
-  test('that pokedex buttons render', async() => {
+  test('that pokedex buttons click function works', async() => {
     const user = userEvent.setup();
     console.log(user);
     render(<App />);
