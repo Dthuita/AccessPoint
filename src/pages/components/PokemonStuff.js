@@ -15,6 +15,7 @@ const PokemonStuff = () => {
     const fetchData = async() => {
         const hold = await pokedex.getPokedexsList()
         setPokedexData( hold.results );
+        console.log(hold);
     }
     const selectPokedex = async(pokedexName) => {
         setselectedPokedex(pokedexName);

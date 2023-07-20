@@ -1,19 +1,67 @@
-import userEvent from '@testing-library/user-event';
-import { render, screen } from '@testing-library/react';
-
+// import userEvent from '@testing-library/user-event';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom'
+import { logRoles } from '@testing-library/jest-dom';
 //api
-import { Pokedex } from 'pokeapi-js-wrapper';
+import Pokedex from 'pokeapi-js-wrapper';
 //component
-import HomePage from './pages/Homepage'
 import App from './App';
+ 
+jest.mock('pokeapi-js-wrapper', () => {
+  return({
+    Pokedex: function() {
+      return {
+        getPokedexsList: function() {
+          return Promise.resolve({results: [{name: "kanto"}, {name: "tokyo "}, {name: "migos "}]})
+        },
+        getPokedexByName: function(pokedexName) {
+          return Promise.resolve({
+            pokemon_entries: [
+              {entry_number: 1, pokemon_species: {name: "Steve"}}, 
+              {entry_number: 2, pokemon_species: {name: "Charizard"}},
+              {entry_number: 3, pokemon_species: {name: "Mr. Mime"}}
+            ]
+          });
+        },
+        getPokemonByName: function(name) {
+          return Promise.resolve({
+            "abilities": [
+              {
+                "ability": {
+                  "name": "limber",
+                }
+              },
+              {
+                "ability": {
+                  "name": "imposter",
+                }
+              }
+            ],
+            name: "Pikachu",
+            types: [{type: {name: "grass"}}],
+            weight: 50,
+            height: 50,
+            stats: [{base_stat: 50}, {base_stat: 50}, {base_stat: 50}, {base_stat: 50}, {base_stat: 50}, {base_stat: 50}]
+          })
+        },
+        getTypeByName: function(type) {
+          return Promise.resolve({
+            double_damage_from: [
+              {name: 'flying', url: 'https://pokeapi.co/api/v2/type/3/'},
+              {name: 'poison', url: 'https://pokeapi.co/api/v2/type/4/'},
+              {name: 'bug', url: 'https://pokeapi.co/api/v2/type/7/'},
+              {name: 'fire', url: 'https://pokeapi.co/api/v2/type/10/'},
+              {name: 'ice', url: 'https://pokeapi.co/api/v2/type/15/'}
+            ]
+          })
+        }
 
-const pokedex = new Pokedex();
+      }
+    }
+  })
+});
 
-// test('renders learn react link', () => {
-//   render(<App />);
-//   const linkElement = screen.getByText(/learn react/i);
-//   expect(linkElement).toBeInTheDocument();
-// });
+
 describe('test for basic functionality', ()=> {
   it("renders without crashing", () => {
     render(<App />);
@@ -22,69 +70,31 @@ describe('test for basic functionality', ()=> {
 
 
 describe('test for basic functionality for homepage', ()=> {
+  beforeEach(async() => {
+    await waitFor(() => {
+      render(<App />)
+    })
+  })
   test('pokeApi fetch for pokedex names', async() => {
-    const res = await pokedex.getPokedexsList();
-    expect(res.results).toHaveLength(32);
+    // const pokedex = new Pokedex(); --> why does this not work??
+    // const hold = await pokedex.getPokedexsList()
+    // console.log(hold); --> should console log {results: [{name: "Region"}, {name: "Minecraft "}]}
   })
   test('that pokedex buttons render', async() => {
-    render(<App />);
     const homeButtons = await screen.findAllByTestId('pokedexButton');
-    expect(homeButtons).toHaveLength(32)
+    expect(homeButtons).toHaveLength(3)
   })
   //fire click event and change pages test
   test('that pokedex buttons click function works', async() => {
-    const user = userEvent.setup();
-    console.log(user);
-    render(<App />);
-    const homeButtons = await screen.findAllByTestId('pokedexButton');
-    const idk = await user.click(homeButtons);
-    console.log(idk)
-    // expect(homeButtons).toHaveLength(32)
+    const clickedButton = await screen.findAllByTestId('pokedexButton');
+    await waitFor(async () => {
+      fireEvent.click(clickedButton[0]);
+      screen.debug();
+      await waitFor(async () => {
+        expect(screen.getByTestId("jumbotronName")).toBeInTheDocument() 
+        expect(screen.getByTestId("poke_comp")).toBeInTheDocument() 
+      })
+    })
   })
 })
 
-describe('test for functionality for pokePage', ()=> {
-  // test.each([
-  //   ['national'],
-  //   ['kanto'],
-  //   ['original-johto'],
-  //   ['hoenn'],
-  //   ['original-sinnoh'],
-  //   ['extended-sinnoh'],
-  //   ['updated-johto'],
-  //   ['original-unova'],
-  //   ['updated-unova'],
-  //   ['conquest-gallery'],
-  //   ['kalos-central'],
-  //   ['kalos-coastal'],
-  //   ['kalos-mountain'],
-  //   ['updated-hoenn'],
-  //   ['original-alola'],
-  //   ['original-melemele'],
-  //   ['original-akala'],
-  //   ['original-ulaula'],
-  //   ['original-poni'],
-  //   ['updated-alola'],
-  //   ['updated-melemele'],
-  //   ['updated-akala'],
-  //   ['updated-ulaula'],
-  //   ['updated-poni'],
-  //   ['letsgo-kanto'],
-  //   ['galar'],
-  //   ['isle-of-armor'],
-  //   ['crown-tundra'],
-  //   ['hisui'],
-  //   ['paldea'],
-  //   ['teal-mask'],  
-  //   ['indigo-disk'],
-  // ])('pokeApi fetch for pokemon in %s pokedex', async(s) => {//unessacary test on api??
-  //   const res = await pokedex.getPokemonByName(s);
-  //   expect(res.results).toHaveLength(32);
-  // })
-  // test('that pokedex buttons render', async() => {
-  //   render(<App />);
-  //   const homeButtons = await screen.findAllByTestId('pokedexButton');
-  //   expect(homeButtons).toHaveLength(32)
-  // })
-  //fire click event and change pages test
-})

@@ -45,6 +45,8 @@ const PokePage = () => {
     const data = await pokedex.getPokedexByName(pokedexName);
     const accEntry = await pokedex.getPokedexByName('national');
 
+  console.log({data})
+
     for(let i=0; i<data.pokemon_entries.length; i++){
       const trueEntry = accEntry.pokemon_entries.find( d => {
         if(d.pokemon_species.name === data.pokemon_entries[i].pokemon_species.name)
@@ -70,7 +72,7 @@ const PokePage = () => {
   return (
     <>
       <div className='jumbotron'>
-        <h1 className='display-4'>{pokedexName}</h1>
+        <h1 data-testid='jumbotronName' className='display-4'>{pokedexName}</h1>
       </div>
 
       <br/>
@@ -78,7 +80,7 @@ const PokePage = () => {
       {/* render pokemon components */}
       <div className='pokemonContainer' style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
         { 
-          pokemons.map( (poke) => <PokeComponent key={poke.entry_num} poke={poke} /> )
+          pokemons.map( (poke) => <PokeComponent data-testid='poke_comp' key={poke.entry_num} poke={poke} /> )
         }
       </div>
     </>
@@ -97,10 +99,11 @@ const PokeComponent = ({poke}) => {
     //display modal
     setShow(true);
     const data = await pokedex.getPokemonByName(poke.name);//everything except evos and weakness
-    console.log(data);
+    console.log({data});
     const types = data.types.map(x => x.type.name)
     const extraData = await Promise.all(types.map(async(x) => {
       const hold = await pokedex.getTypeByName(x)
+      console.log({hold})
       return hold.damage_relations;
     }));
     console.log(extraData);
