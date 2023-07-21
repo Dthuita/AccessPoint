@@ -1,12 +1,11 @@
-// import userEvent from '@testing-library/user-event';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom'
-import { logRoles } from '@testing-library/jest-dom';
-//api
-import Pokedex from 'pokeapi-js-wrapper';
+
 //component
 import App from './App';
  
+// api 
+import Pokedex from 'pokeapi-js-wrapper';
 jest.mock('pokeapi-js-wrapper', () => {
   return({
     Pokedex: function() {
@@ -25,34 +24,43 @@ jest.mock('pokeapi-js-wrapper', () => {
         },
         getPokemonByName: function(name) {
           return Promise.resolve({
-            "abilities": [
-              {
-                "ability": {
-                  "name": "limber",
-                }
-              },
-              {
-                "ability": {
-                  "name": "imposter",
-                }
-              }
-            ],
             name: "Pikachu",
-            types: [{type: {name: "grass"}}],
             weight: 50,
-            height: 50,
-            stats: [{base_stat: 50}, {base_stat: 50}, {base_stat: 50}, {base_stat: 50}, {base_stat: 50}, {base_stat: 50}]
+            height: 50,            
+            abilities: [
+              { ability: {name: 'overgrow', url: 'https://pokeapi.co/api/v2/ability/65/'} },
+              { ability: {name: 'chlorophyll', url: 'https://pokeapi.co/api/v2/ability/34/'} }
+            ],            
+            types: [
+              {type: {name: 'grass', url: 'https://pokeapi.co/api/v2/type/12/'}},
+              // {type: {name: 'poison', url: 'https://pokeapi.co/api/v2/type/4/'}}
+            ],
+            stats: [
+              {base_stat: 50, stat: {name: 'hp'}}, 
+              {base_stat: 50, stat: {name: 'attack'}}, 
+              {base_stat: 50, stat: {name: 'defense'}}, 
+              {base_stat: 50, stat: {name: 'special-attack'}},
+              {base_stat: 50, stat: {name: 'special-defense'}}, 
+              {base_stat: 50, stat: {name: 'speed'}}
+            ]
           })
         },
         getTypeByName: function(type) {
           return Promise.resolve({
-            double_damage_from: [
-              {name: 'flying', url: 'https://pokeapi.co/api/v2/type/3/'},
-              {name: 'poison', url: 'https://pokeapi.co/api/v2/type/4/'},
-              {name: 'bug', url: 'https://pokeapi.co/api/v2/type/7/'},
-              {name: 'fire', url: 'https://pokeapi.co/api/v2/type/10/'},
-              {name: 'ice', url: 'https://pokeapi.co/api/v2/type/15/'}
-            ]
+            damage_relations: {
+              double_damage_from: [
+                {name: 'flying', url: 'https://pokeapi.co/api/v2/type/3/'},
+                {name: 'poison', url: 'https://pokeapi.co/api/v2/type/4/'},
+                {name: 'bug', url: 'https://pokeapi.co/api/v2/type/7/'},
+                {name: 'fire', url: 'https://pokeapi.co/api/v2/type/10/'},
+                {name: 'ice', url: 'https://pokeapi.co/api/v2/type/15/'}
+              ],
+              double_damage_to: [
+                {name: 'ground', url: 'https://pokeapi.co/api/v2/type/5/'},
+                {name: 'rock', url: 'https://pokeapi.co/api/v2/type/6/'},
+                {name: 'water', url: 'https://pokeapi.co/api/v2/type/11/'}
+              ]
+            }
           })
         }
 
@@ -62,39 +70,61 @@ jest.mock('pokeapi-js-wrapper', () => {
 });
 
 
-describe('test for basic functionality', ()=> {
-  it("renders without crashing", () => {
+describe('test that app loads', ()=> {
+  test("renders without crashing", () => {
     render(<App />);
   });
+  //if test crashes error is caught
 })
 
 
-describe('test for basic functionality for homepage', ()=> {
+describe('test for basic functionality for homepage and pokePage', () => {
+
   beforeEach(async() => {
     await waitFor(() => {
       render(<App />)
     })
   })
-  test('pokeApi fetch for pokedex names', async() => {
-    // const pokedex = new Pokedex(); --> why does this not work??
-    // const hold = await pokedex.getPokedexsList()
-    // console.log(hold); --> should console log {results: [{name: "Region"}, {name: "Minecraft "}]}
-  })
+  // afterEach(async() => { //no point clearing mocks??? 
+  //   jest.clearAllMocks();
+  // })
+
   test('that pokedex buttons render', async() => {
     const homeButtons = await screen.findAllByTestId('pokedexButton');
     expect(homeButtons).toHaveLength(3)
   })
-  //fire click event and change pages test
-  test('that pokedex buttons click function works', async() => {
+  // fire click event and change pages test
+  test('that pokedex buttons click function works and next page loads', async() => {     
+    screen.debug();
     const clickedButton = await screen.findAllByTestId('pokedexButton');
     await waitFor(async () => {
       fireEvent.click(clickedButton[0]);
-      screen.debug();
       await waitFor(async () => {
-        expect(screen.getByTestId("jumbotronName")).toBeInTheDocument() 
-        expect(screen.getByTestId("poke_comp")).toBeInTheDocument() 
+        await expect(screen.getByTestId("jumbotronName")).toBeInTheDocument() 
+        await expect(screen.getByTestId("poke_container")).toBeInTheDocument() 
+        await expect(screen.getByTestId("viewDetails1")).toBeInTheDocument() 
+      })
+      screen.debug();//console.logs the pokepage with pokemons previews
+      const viewDetailsButton = screen.getByTestId('viewDetails1');
+      await waitFor(async () => {
+        fireEvent.click(viewDetailsButton);
+        // screen.debug();
+        await waitFor(async () => {
+          screen.debug();
+          await expect(screen.getByText('01')).toBeInTheDocument();
+          await expect(screen.getByText('Height', {exact: false})).toBeInTheDocument();
+          await expect(screen.getByText('Abilities', {exact: false})).toBeInTheDocument();
+        })
       })
     })
+  })
+
+})
+
+describe('test for fail catches when load fails', () => {
+
+  test('fails pokedex list fetch catch', async() => {
+    
   })
 })
 

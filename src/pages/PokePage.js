@@ -78,9 +78,9 @@ const PokePage = () => {
       <br/>
 
       {/* render pokemon components */}
-      <div className='pokemonContainer' style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
+      <div className='pokemonContainer' data-testid='poke_container' style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around'}}>
         { 
-          pokemons.map( (poke) => <PokeComponent data-testid='poke_comp' key={poke.entry_num} poke={poke} /> )
+          pokemons.map( (poke, ind) => <PokeComponent data-testid={`poke_comp`+ind} key={poke.entry_num} poke={poke} /> )
         }
       </div>
     </>
@@ -99,11 +99,11 @@ const PokeComponent = ({poke}) => {
     //display modal
     setShow(true);
     const data = await pokedex.getPokemonByName(poke.name);//everything except evos and weakness
-    console.log({data});
+    console.log('getPokemonByName: ', data);
     const types = data.types.map(x => x.type.name)
     const extraData = await Promise.all(types.map(async(x) => {
       const hold = await pokedex.getTypeByName(x)
-      console.log({hold})
+      console.log('getTypeByName: ', hold)
       return hold.damage_relations;
     }));
     console.log(extraData);
@@ -135,19 +135,19 @@ const PokeComponent = ({poke}) => {
           <Modal.Title className='display-3'>{poke.name}</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-          <div style={{margin: '20px', padding:'0p'}}> {/*https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/other/home/10002.png*/}
+          <div style={{margin: '20px', padding:'0p'}}> { /* https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/other/home/10002.png*/}
             <img style={{width: '200px', height: '200px'}} src={`https://raw.github.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${poke.entry_num}.png`} />
             <h5 className="font-weight-light font-italic" style={{textAlign: 'center', marginTop: '40px'}}>0{poke.entry_num}</h5>
           </div>
           <div style={{marginTop: '30px'}}>
-            <div style={{display: 'block', margin: 'auto', width: '300px', height: '300px'}}>
+            <div  style={{display: 'block', margin: 'auto', width: '300px', height: '300px'}}>
               <Radar
                 width={200}
                 height={200}
                 padding={5}
                 marginTop={20}
                 domainMax={Math.max(...RadarDomainArr)}
-        
+
                 data={{
                   variables: [
                     {key: 'HP', label: 'HP'},
@@ -179,35 +179,35 @@ const PokeComponent = ({poke}) => {
             <hr/><h5>Abilities: {pokeDetails.data.abilities.map(x => x.ability.name).join(', ')}</h5>
             <hr/><h5>Type:  
             {pokeDetails.data.types.map(x => { 
-              return <img style={{marginLeft: '10px'}} src={`${typeImgs[x.type.name]}`} />
+              return <img key={x.type.name} style={{marginLeft: '10px'}} src={`${typeImgs[x.type.name]}`} />
             })} </h5>
             <hr/>
             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
               <table>{/* x2 damage from */}
-              <tr>
+              <tbody><tr>
                 <th>Weakest Against:  </th>
                 <td> 
                   {console.log(pokeDetails.extraData)}
                   {pokeDetails.extraData.map( w => {
                     return w.double_damage_from.map(x => 
-                      <img style={{margin: '5px'}} src={`${typeImgs[x.name]}`} />
+                      <img key={x.name} style={{margin: '5px'}} src={`${typeImgs[x.name]}`} />
                     )
                   })} 
                 </td>
-              </tr>
+              </tr></tbody>
               </table>
               <table>{/* x2 damage to */}
-              <tr>
+              <tbody><tr>
                 <th>Strongest Against:  </th>
                 <td> 
                   {console.log(pokeDetails.extraData)}
                   {pokeDetails.extraData.map( w => {
                     return w.double_damage_to.map(x => 
-                      <img style={{margin: '5px'}} src={`${typeImgs[x.name]}`} />
+                      <img key={x.name} style={{margin: '5px'}} src={`${typeImgs[x.name]}`} />
                     )
                   })} 
                 </td>
-              </tr>
+              </tr></tbody>
               </table>
               </div>
           </div>
@@ -229,7 +229,7 @@ const PokeComponent = ({poke}) => {
         <img onError={defaultStillImage} src={poke.img} style={{width: '300px', height: '350px',  imageRendering: 'crisp-edges' }}></img>
         <h3>{poke.name}</h3>
         <h5>{poke.entry_num}</h5>
-        <Button onClick={viewDetailsHandler} variant='primary'>View Details</Button>
+        <Button data-testid={'viewDetails' + poke.entry_num} onClick={viewDetailsHandler} variant='primary'>View Details</Button>
       </div>
       {customModal}
     </>
