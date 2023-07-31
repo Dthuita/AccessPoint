@@ -62,13 +62,26 @@ jest.mock('pokeapi-js-wrapper', () => {
               ]
             }
           })
+        },
+        getPokemonSpeciesByName: function(type) {
+          return Promise.resolve({color: {name: 'red'}})
         }
-
       }
     }
   })
 });
 
+import {useLottie} from 'lottie-react'
+jest.mock('lottie-react', () => {
+  return({
+    useLottie: function() {
+      return {
+        View: jest.fn().mockResolvedValue('hello'),
+        destroy: jest.fn().mockResolvedValue('')
+      }
+    }
+  })
+});
 
 describe('test that app loads', ()=> {
   test("renders without crashing", () => {
@@ -89,20 +102,20 @@ describe('test for basic functionality for homepage and pokePage', () => {
   //   jest.clearAllMocks();
   // })
 
-  test('that pokedex buttons render', async() => {
+  test('that pokedex buttons render on homepage', async() => {
     const homeButtons = await screen.findAllByTestId('pokedexButton');
     expect(homeButtons).toHaveLength(3)
   })
   // fire click event and change pages test
-  test('that pokedex buttons click function works and next page loads', async() => {     
+  test('that pokedex buttons click function works and next page loads and pokemon details show', async() => {     
     screen.debug();
     const clickedButton = await screen.findAllByTestId('pokedexButton');
     await waitFor(async () => {
       fireEvent.click(clickedButton[0]);
-      await waitFor(async () => {
-        await expect(screen.getByTestId("jumbotronName")).toBeInTheDocument() 
-        await expect(screen.getByTestId("poke_container")).toBeInTheDocument() 
-        await expect(screen.getByTestId("viewDetails1")).toBeInTheDocument() 
+      await waitFor(() => {
+        expect(screen.getByTestId("pokedexName")).toBeInTheDocument() 
+        expect(screen.getByTestId("poke_container")).toBeInTheDocument() 
+        expect(screen.getByTestId("viewDetails1")).toBeInTheDocument() 
       })
       screen.debug();//console.logs the pokepage with pokemons previews
       const viewDetailsButton = screen.getByTestId('viewDetails1');
@@ -115,16 +128,11 @@ describe('test for basic functionality for homepage and pokePage', () => {
           await expect(screen.getByText('Height', {exact: false})).toBeInTheDocument();
           await expect(screen.getByText('Abilities', {exact: false})).toBeInTheDocument();
         })
+        screen.debug();
       })
     })
   })
 
 })
 
-describe('test for fail catches when load fails', () => {
-
-  test('fails pokedex list fetch catch', async() => {
-    
-  })
-})
 

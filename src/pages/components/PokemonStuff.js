@@ -1,6 +1,8 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { Pokedex } from  'pokeapi-js-wrapper';
 import { useNavigate } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Button } from 'react-bootstrap';
 
 const PokemonStuff = () => {
     //rip images from online for pokedexes?? maybe
@@ -27,20 +29,21 @@ const PokemonStuff = () => {
 
     return(
         <>
-        <div> <h1>Choose a Pokedex: </h1> </div>
-        <div style={{display: 'flex', flexWrap: 'wrap'}}>
+        <div className='p-3 mb-1 pt-3'>
+            <p className='display-3'>Choose a Pokedex:</p>
+        </div>
+        <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center'}}>
             {
                 pokedexData.map( (item) => {
                     return (
-                        <div key={item.name} style={{margin: '10px', padding: '5px'}}>
-                            <button data-testid='pokedexButton' onClick={ () => {
+                        <div key={item.name} style={{margin: '10px', padding: '20px'}}>
+                            <Button style={{borderRadius: '25px', padding: '10px'}} data-testid='pokedexButton' variant="outline-light" onClick={ () => {
                                     selectPokedex(item)
                                     //selectedPokedex state var doesn't update fast enough??
                                     nav('/pokemon', {state: {pokedexName: item.name, pokedexURL: item.url}})
-                                } 
-                            } style={{borderRadius: '25px'}}>
+                            } }>
                                 <h2>{item.name}</h2> 
-                            </button>
+                            </Button>
                         </div>
                     )
                 })
